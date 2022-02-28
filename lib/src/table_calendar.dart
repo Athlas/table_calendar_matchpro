@@ -6,6 +6,8 @@ import 'dart:math';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:simple_gesture_detector/simple_gesture_detector.dart';
+import 'package:table_calendar/src/model/closed_day.dart';
+import 'package:table_calendar/src/model/scheduled_activity.dart';
 
 import 'customization/calendar_builders.dart';
 import 'customization/calendar_style.dart';
@@ -67,6 +69,10 @@ class TableCalendar<T> extends StatefulWidget {
 
   /// Specifies `TableCalendar`'s current format.
   final CalendarFormat calendarFormat;
+
+  final List<ScheduledActivity> agenda;
+
+  final List<ClosedDay> closedDay;
 
   /// `Map` of `CalendarFormat`s and `String` names associated with them.
   /// Those `CalendarFormat`s will be used by internal logic to manage displayed format.
@@ -207,6 +213,8 @@ class TableCalendar<T> extends StatefulWidget {
     required DateTime focusedDay,
     required DateTime firstDay,
     required DateTime lastDay,
+    required this.agenda,
+    required this.closedDay,
     DateTime? currentDay,
     this.locale,
     this.rangeStartDay,
@@ -593,6 +601,8 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
         final isToday = isSameDay(day, widget.currentDay);
         final isDisabled = _isDayDisabled(day);
         final isWeekend = _isWeekend(day, weekendDays: widget.weekendDays);
+        final isScheduled = _isScheduled(day, widget.agenda);
+        final isClosed = _isClosed(day, widget.closedDay);
 
         Widget content = CellContent(
           key: ValueKey('CellContent-${day.year}-${day.month}-${day.day}'),
@@ -604,6 +614,8 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
           isToday: isToday,
           isSelected: widget.selectedDayPredicate?.call(day) ?? false,
           isRangeStart: isRangeStart,
+          isScheduled: isScheduled,
+          isClosed: isClosed,
           isRangeEnd: isRangeEnd,
           isWithinRange: isWithinRange,
           isOutside: isOutside,
@@ -737,5 +749,54 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
     List<int> weekendDays = const [DateTime.saturday, DateTime.sunday],
   }) {
     return weekendDays.contains(day.weekday);
+  }
+
+  bool _isClosed(DateTime day, List<ClosedDay> listOfClosedDay) {
+    bool result = false;
+    int i = 0;
+    while(i < listOfClosedDay.length && result != true){
+      List<String> time = listOfClosedDay[i].date.split("/");
+      if (day.year == int.parse(time[2]) &&
+          day.month == int.parse(time[1]) &&
+          day.day == int.parse(time[0])) {
+        result = true;
+      }
+      i++;
+    };
+
+    return result;
+  }
+
+  bool _isScheduled(DateTime day, List<ScheduledActivity> listOfScheduledDay) {
+    bool result = false;
+    int i = 0;
+    while(i < listOfScheduledDay.length && result != true)
+    {
+      if(result != true)
+        if(listOfScheduledDay[i].isUnique)
+        {
+          if(listOfScheduledDay[i].date != null) {
+            List<String> time = listOfScheduledDay[i].date.split("/");
+            if (day.year == int.parse(time[2]) &&
+                day.month == int.parse(time[1]) &&
+                day.day == int.parse(time[0])) {
+              result = true;
+            }
+          }
+        }
+        else
+        {
+          int j = 0;
+          listOfScheduledDay[i].days.forEach((repetitiveDay) {
+            if(repetitiveDay == true && j == day.weekday - 1) {
+              result = true;
+            }
+            j++;
+          });
+        }
+      i++;
+    };
+
+    return result;
   }
 }

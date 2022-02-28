@@ -93,6 +93,8 @@ class _TableEventsExampleState extends State<TableEventsExample> {
           TableCalendar<Event>(
             firstDay: kFirstDay,
             lastDay: kLastDay,
+            agenda: [],
+            closedDay: [],
             focusedDay: _focusedDay,
             selectedDayPredicate: (day) => isSameDay(_selectedDay, day),
             rangeStartDay: _rangeStart,

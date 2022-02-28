@@ -77,6 +77,14 @@ class CalendarStyle {
   /// Decoration for a day cell that matches the current day.
   final Decoration todayDecoration;
 
+  /// new features
+  final Decoration selectedAndScheduledDecoration;
+  final Decoration selectedAndClosedDecoration;
+  final Decoration todayAndScheduledDecoration;
+  final Decoration todayAndClosedDecoration;
+  final Decoration closedDecoration;
+  final Decoration scheduledDecoration;
+
   /// TextStyle for day cells that are currently marked as selected by `selectedDayPredicate`.
   final TextStyle selectedTextStyle;
 
@@ -172,7 +180,24 @@ class CalendarStyle {
       fontSize: 16.0,
     ), //
     this.todayDecoration = const BoxDecoration(
+      border: const Border.fromBorderSide(const BorderSide(
+          width: 3,
+          color: Color(0xFFF11111)
+      )
+      ),
       color: const Color(0xFF9FA8DA),
+      shape: BoxShape.circle,
+    ),
+    this.todayAndScheduledDecoration = const BoxDecoration(
+      color: const Color(0xFF9FA8DA),
+      shape: BoxShape.circle,
+    ),
+    this.todayAndClosedDecoration = const BoxDecoration(
+      color: const Color(0xFF9FA8DA),
+      shape: BoxShape.circle,
+    ),
+    this.scheduledDecoration = const BoxDecoration(
+      color: const Color(0xFFF9BB79),
       shape: BoxShape.circle,
     ),
     this.selectedTextStyle = const TextStyle(
@@ -180,7 +205,24 @@ class CalendarStyle {
       fontSize: 16.0,
     ),
     this.selectedDecoration = const BoxDecoration(
+      border: const Border.fromBorderSide(const BorderSide(
+          width: 3,
+          color: Color(0xFF5C6BC0)
+      )
+      ),
+      //color: const Color(0xFFFAFAFA),
+      shape: BoxShape.circle,
+    ),
+    this.selectedAndScheduledDecoration = const BoxDecoration(
       color: const Color(0xFF5C6BC0),
+      shape: BoxShape.circle,
+    ),
+    this.selectedAndClosedDecoration = const BoxDecoration(
+      color: const Color(0xFFDE3428),
+      shape: BoxShape.circle,
+    ),
+    this.closedDecoration = const BoxDecoration(
+      color: const Color(0xFFDE3428),
       shape: BoxShape.circle,
     ),
     this.rangeStartTextStyle = const TextStyle(

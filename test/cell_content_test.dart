@@ -7,19 +7,21 @@ import 'package:table_calendar/src/widgets/cell_content.dart';
 import 'package:table_calendar/table_calendar.dart';
 
 Widget setupTestWidget(
-  DateTime cellDay, {
-  CalendarBuilders calendarBuilders = const CalendarBuilders(),
-  bool isDisabled = false,
-  bool isToday = false,
-  bool isWeekend = false,
-  bool isOutside = false,
-  bool isSelected = false,
-  bool isRangeStart = false,
-  bool isRangeEnd = false,
-  bool isWithinRange = false,
-  bool isHoliday = false,
-  bool isTodayHighlighted = true,
-}) {
+    DateTime cellDay, {
+      CalendarBuilders calendarBuilders = const CalendarBuilders(),
+      bool isDisabled = false,
+      bool isToday = false,
+      bool isWeekend = false,
+      bool isOutside = false,
+      bool isSelected = false,
+      bool isRangeStart = false,
+      bool isClosed = false,
+      bool isScheduled = false,
+      bool isRangeEnd = false,
+      bool isWithinRange = false,
+      bool isHoliday = false,
+      bool isTodayHighlighted = true,
+    }) {
   final calendarStyle = CalendarStyle();
 
   return Directionality(
@@ -33,6 +35,8 @@ Widget setupTestWidget(
       isToday: isToday,
       isWeekend: isWeekend,
       isOutside: isOutside,
+      isClosed: isClosed,
+      isScheduled: isScheduled,
       isSelected: isSelected,
       isRangeStart: isRangeStart,
       isRangeEnd: isRangeEnd,
@@ -215,7 +219,7 @@ void main() {
 
     testWidgets(
       'defaultBuilder gets triggered when no other flags are active',
-      (tester) async {
+          (tester) async {
         DateTime? builderDay;
 
         final calendarBuilders = CalendarBuilders(
@@ -241,7 +245,7 @@ void main() {
 
     testWidgets(
       'disabledBuilder has higher build order priority than selectedBuilder',
-      (tester) async {
+          (tester) async {
         DateTime? builderDay;
         String builderName = '';
 
@@ -277,7 +281,7 @@ void main() {
 
     testWidgets(
       'prioritizedBuilder has the highest build order priority',
-      (tester) async {
+          (tester) async {
         DateTime? builderDay;
         String builderName = '';
 

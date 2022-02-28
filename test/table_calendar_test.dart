@@ -35,6 +35,8 @@ Widget createTableCalendar({
       firstDay: firstDay,
       lastDay: lastDay,
       currentDay: today,
+      closedDay: [],
+      agenda: [],
       calendarFormat: calendarFormat,
       onPageChanged: onPageChanged,
       sixWeekMonthsEnforced: sixWeekMonthsEnforced,
@@ -429,6 +431,8 @@ void main() {
             firstDay: firstDay,
             lastDay: lastDay,
             currentDay: today,
+            agenda: [],
+            closedDay: [],
             eventLoader: (day) {
               if (day.day == eventDay.day && day.month == eventDay.month) {
                 return ['Event 1', 'Event 2', 'Event 3'];
@@ -469,6 +473,8 @@ void main() {
             firstDay: firstDay,
             lastDay: lastDay,
             currentDay: today,
+            agenda: [],
+            closedDay: [],
           ),
         ));
 
@@ -491,6 +497,8 @@ void main() {
           TableCalendar(
             focusedDay: now,
             firstDay: firstDay,
+            agenda: [],
+            closedDay: [],
             lastDay: lastDay,
           ),
         ));
@@ -513,6 +521,8 @@ void main() {
             focusedDay: initialFocusedDay,
             firstDay: firstDay,
             lastDay: lastDay,
+            agenda: [],
+            closedDay: [],
             currentDay: today,
             selectedDayPredicate: (day) {
               return isSameDay(day, selectedDay);
@@ -539,6 +549,8 @@ void main() {
             firstDay: firstDay,
             lastDay: lastDay,
             currentDay: today,
+            agenda: [],
+            closedDay: [],
             holidayPredicate: (day) {
               return isSameDay(day, holiday);
             },
@@ -639,6 +651,8 @@ void main() {
           focusedDay: today,
           firstDay: firstDay,
           lastDay: lastDay,
+          agenda: [],
+          closedDay: [],
           currentDay: today,
           calendarFormat: calendarFormat,
           onFormatChanged: (format) {
@@ -665,6 +679,8 @@ void main() {
           firstDay: firstDay,
           lastDay: lastDay,
           currentDay: today,
+          agenda: [],
+          closedDay: [],
           calendarFormat: calendarFormat,
           onFormatChanged: (format) {
             calendarFormat = format;
@@ -688,6 +704,8 @@ void main() {
         TableCalendar(
           focusedDay: today,
           firstDay: firstDay,
+          agenda: [],
+          closedDay: [],
           lastDay: lastDay,
           currentDay: today,
           calendarFormat: calendarFormat,
@@ -719,6 +737,8 @@ void main() {
             firstDay: firstDay,
             lastDay: lastDay,
             currentDay: today,
+            agenda: [],
+            closedDay: [],
             onDaySelected: (selected, focused) {
               selectedDay = selected;
             },
@@ -746,6 +766,8 @@ void main() {
             focusedDay: initialFocusedDay,
             firstDay: firstDay,
             lastDay: lastDay,
+            agenda: [],
+            closedDay: [],
             currentDay: today,
             onDaySelected: (selected, focused) {
               focusedDay = focused;
@@ -775,6 +797,8 @@ void main() {
             focusedDay: initialFocusedDay,
             firstDay: firstDay,
             lastDay: lastDay,
+            agenda: [],
+            closedDay: [],
             currentDay: today,
             onDaySelected: (selected, focused) {
               selectedDay = selected;
@@ -808,6 +832,8 @@ void main() {
           TableCalendar(
             focusedDay: DateTime.utc(2021, 8, 16),
             firstDay: firstDay,
+            agenda: [],
+            closedDay: [],
             lastDay: lastDay,
             currentDay: DateTime.utc(2021, 8, 16),
             onDaySelected: (selected, focused) {
@@ -845,6 +871,8 @@ void main() {
             firstDay: firstDay,
             lastDay: lastDay,
             currentDay: today,
+            agenda: [],
+            closedDay: [],
             onDayLongPressed: (selected, focused) {
               selectedDay = selected;
             },
@@ -872,6 +900,8 @@ void main() {
             focusedDay: initialFocusedDay,
             firstDay: firstDay,
             lastDay: lastDay,
+            agenda: [],
+            closedDay: [],
             currentDay: today,
             onDayLongPressed: (selected, focused) {
               focusedDay = focused;
@@ -900,6 +930,8 @@ void main() {
           TableCalendar(
             focusedDay: initialFocusedDay,
             firstDay: firstDay,
+            agenda: [],
+            closedDay: [],
             lastDay: lastDay,
             currentDay: today,
             onDayLongPressed: (selected, focused) {
@@ -935,6 +967,8 @@ void main() {
             focusedDay: DateTime.utc(2021, 8, 16),
             firstDay: firstDay,
             lastDay: lastDay,
+            agenda: [],
+            closedDay: [],
             currentDay: DateTime.utc(2021, 8, 16),
             onDayLongPressed: (selected, focused) {
               selectedDay = selected;
@@ -973,6 +1007,8 @@ void main() {
             firstDay: firstDay,
             lastDay: lastDay,
             currentDay: today,
+            agenda: [],
+            closedDay: [],
             rangeSelectionMode: RangeSelectionMode.enforced,
             onRangeSelected: (start, end, focused) {
               rangeStart = start;
@@ -1017,6 +1053,8 @@ void main() {
             firstDay: firstDay,
             lastDay: lastDay,
             currentDay: today,
+            agenda: [],
+            closedDay: [],
             rangeSelectionMode: RangeSelectionMode.enforced,
             onRangeSelected: (start, end, focused) {
               rangeStart = start;
@@ -1061,6 +1099,8 @@ void main() {
             focusedDay: initialFocusedDay,
             firstDay: firstDay,
             lastDay: lastDay,
+            agenda: [],
+            closedDay: [],
             currentDay: today,
             rangeSelectionMode: RangeSelectionMode.toggledOff,
             onDaySelected: (selected, focused) {
@@ -1116,6 +1156,8 @@ void main() {
             focusedDay: initialFocusedDay,
             firstDay: firstDay,
             lastDay: lastDay,
+            agenda: [],
+            closedDay: [],
             currentDay: today,
             rangeSelectionMode: RangeSelectionMode.toggledOn,
             onDaySelected: (selected, focused) {
@@ -1171,6 +1213,8 @@ void main() {
             focusedDay: initialFocusedDay,
             firstDay: firstDay,
             lastDay: lastDay,
+            agenda: [],
+            closedDay: [],
             currentDay: today,
             rangeSelectionMode: RangeSelectionMode.enforced,
             onDaySelected: (selected, focused) {
@@ -1225,6 +1269,8 @@ void main() {
           TableCalendar(
             focusedDay: initialFocusedDay,
             firstDay: firstDay,
+            agenda: [],
+            closedDay: [],
             lastDay: lastDay,
             currentDay: today,
             rangeSelectionMode: RangeSelectionMode.disabled,
@@ -1282,6 +1328,8 @@ void main() {
             firstDay: firstDay,
             lastDay: lastDay,
             currentDay: today,
+            agenda: [],
+            closedDay: [],
             rangeStartDay: rangeStart,
             rangeEndDay: rangeEnd,
           ),
@@ -1316,6 +1364,8 @@ void main() {
             focusedDay: initialFocusedDay,
             firstDay: firstDay,
             lastDay: lastDay,
+            agenda: [],
+            closedDay: [],
             currentDay: today,
             rangeStartDay: rangeStart,
             rangeEndDay: rangeEnd,
@@ -1351,6 +1401,8 @@ void main() {
             focusedDay: initialFocusedDay,
             firstDay: firstDay,
             lastDay: lastDay,
+            agenda: [],
+            closedDay: [],
             currentDay: today,
             rangeStartDay: rangeStart,
             rangeEndDay: rangeEnd,

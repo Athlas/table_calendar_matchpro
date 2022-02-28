@@ -25,6 +25,8 @@ class _TableBasicsExampleState extends State<TableBasicsExample> {
       body: TableCalendar(
         firstDay: kFirstDay,
         lastDay: kLastDay,
+        agenda: [],
+        closedDay: [],
         focusedDay: _focusedDay,
         calendarFormat: _calendarFormat,
         selectedDayPredicate: (day) {

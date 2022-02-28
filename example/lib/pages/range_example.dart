@@ -34,6 +34,8 @@ class _TableRangeExampleState extends State<TableRangeExample> {
         rangeStartDay: _rangeStart,
         rangeEndDay: _rangeEnd,
         calendarFormat: _calendarFormat,
+        agenda: [],
+        closedDay: [],
         rangeSelectionMode: _rangeSelectionMode,
         onDaySelected: (selectedDay, focusedDay) {
           if (!isSameDay(_selectedDay, selectedDay)) {
