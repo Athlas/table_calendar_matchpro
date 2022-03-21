@@ -8,14 +8,11 @@ class ScheduledActivity {
   bool isUnique = false;
   List time = [];
 
-  ScheduledActivity(DocumentSnapshot? snapshot) {
-    if(snapshot != null) {
-      Map map = snapshot.data() as Map<dynamic, String>;
-      activity_id = map['activity_id'];
-      date = map['date'];
-      days = map['days'];
-      isUnique = map['isUnique'];
-      time = map['time'];
-    }
+  ScheduledActivity(Map<String, dynamic> map) {
+    activity_id = map['activity_id'];
+    date = map['date'];
+    days = map['days'];
+    isUnique = map['isUnique'];
+    time = map['time'];
   }
 }

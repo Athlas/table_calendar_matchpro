@@ -5,11 +5,8 @@ class ClosedDay {
   String message = "";
   String date = "";
 
-  ClosedDay(DocumentSnapshot? snapshot) {
-    if(snapshot != null) {
-      Map map = snapshot.data() as Map<dynamic, String>;
-      message = map['message'];
-      date = map['date'];
-    }
+  ClosedDay(Map<String, dynamic> map) {
+    message = map['message'];
+    date = map['date'];
   }
 }

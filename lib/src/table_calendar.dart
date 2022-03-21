@@ -6,6 +6,8 @@ import 'dart:math';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:simple_gesture_detector/simple_gesture_detector.dart';
+import 'package:table_calendar/src/model/closed_day.dart';
+import 'package:table_calendar/src/model/scheduled_activity.dart';
 
 import 'customization/calendar_builders.dart';
 import 'customization/calendar_style.dart';
@@ -68,9 +70,9 @@ class TableCalendar<T> extends StatefulWidget {
   /// Specifies `TableCalendar`'s current format.
   final CalendarFormat calendarFormat;
 
-  final List agenda;
+  final List<Map<String, dynamic>> agenda;
 
-  final List closedDay;
+  final List<Map<String, dynamic>> closedDay;
 
   /// `Map` of `CalendarFormat`s and `String` names associated with them.
   /// Those `CalendarFormat`s will be used by internal logic to manage displayed format.
@@ -283,12 +285,27 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
   late final ValueNotifier<DateTime> _focusedDay;
   late RangeSelectionMode _rangeSelectionMode;
   DateTime? _firstSelectedDay;
+  List<ClosedDay> _closedDay = [];
+  List<ScheduledActivity> _agenda = [];
 
   @override
   void initState() {
     super.initState();
     _focusedDay = ValueNotifier(widget.focusedDay);
     _rangeSelectionMode = widget.rangeSelectionMode;
+
+    int i = 0;
+    while (i < widget.closedDay.length) {
+      _closedDay.add(ClosedDay(widget.closedDay[i]));
+      i++;
+    }
+
+    i = 0;
+    while(i < widget.agenda.length) {
+      _agenda.add(ScheduledActivity(widget.agenda[i]));
+      i++;
+    }
+
   }
 
   @override
@@ -316,15 +333,15 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
 
   bool get _isRangeSelectionToggleable =>
       _rangeSelectionMode == RangeSelectionMode.toggledOn ||
-      _rangeSelectionMode == RangeSelectionMode.toggledOff;
+          _rangeSelectionMode == RangeSelectionMode.toggledOff;
 
   bool get _isRangeSelectionOn =>
       _rangeSelectionMode == RangeSelectionMode.toggledOn ||
-      _rangeSelectionMode == RangeSelectionMode.enforced;
+          _rangeSelectionMode == RangeSelectionMode.enforced;
 
   bool get _shouldBlockOutsideDays =>
       !widget.calendarStyle.outsideDaysVisible &&
-      widget.calendarFormat == CalendarFormat.month;
+          widget.calendarFormat == CalendarFormat.month;
 
   void _swipeCalendarFormat(SwipeDirection direction) {
     if (widget.onFormatChanged != null) {
@@ -469,8 +486,8 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
                 locale: widget.locale,
                 onFormatButtonTap: (format) {
                   assert(
-                    widget.onFormatChanged != null,
-                    'Using `FormatButton` without providing `onFormatChanged` will have no effect.',
+                  widget.onFormatChanged != null,
+                  'Using `FormatButton` without providing `onFormatChanged` will have no effect.',
                   );
 
                   widget.onFormatChanged?.call(format);
@@ -512,15 +529,15 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
             },
             dowBuilder: (BuildContext context, DateTime day) {
               Widget? dowCell =
-                  widget.calendarBuilders.dowBuilder?.call(context, day);
+              widget.calendarBuilders.dowBuilder?.call(context, day);
 
               if (dowCell == null) {
                 final weekdayString = widget.daysOfWeekStyle.dowTextFormatter
-                        ?.call(day, widget.locale) ??
+                    ?.call(day, widget.locale) ??
                     DateFormat.E(widget.locale).format(day);
 
                 final isWeekend =
-                    _isWeekend(day, weekendDays: widget.weekendDays);
+                _isWeekend(day, weekendDays: widget.weekendDays);
 
                 dowCell = Center(
                   child: ExcludeSemantics(
@@ -584,8 +601,8 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
                   end: isRangeEnd ? constraints.maxWidth * 0.5 : 0.0,
                 ),
                 height:
-                    (shorterSide - widget.calendarStyle.cellMargin.vertical) *
-                        widget.calendarStyle.rangeHighlightScale,
+                (shorterSide - widget.calendarStyle.cellMargin.vertical) *
+                    widget.calendarStyle.rangeHighlightScale,
                 color: widget.calendarStyle.rangeHighlightColor,
               ),
             );
@@ -599,8 +616,8 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
         final isToday = isSameDay(day, widget.currentDay);
         final isDisabled = _isDayDisabled(day);
         final isWeekend = _isWeekend(day, weekendDays: widget.weekendDays);
-        final isScheduled = _isScheduled(day, widget.agenda);
-        final isClosed = _isClosed(day, widget.closedDay);
+        final isScheduled = _isScheduled(day, _agenda);
+        final isClosed = _isClosed(day, _closedDay);
 
         Widget content = CellContent(
           key: ValueKey('CellContent-${day.year}-${day.month}-${day.day}'),
@@ -628,7 +645,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
         if (!isDisabled) {
           final events = widget.eventLoader?.call(day) ?? [];
           Widget? markerWidget =
-              widget.calendarBuilders.markerBuilder?.call(context, day, events);
+          widget.calendarBuilders.markerBuilder?.call(context, day, events);
 
           if (events.isNotEmpty && markerWidget == null) {
             final center = constraints.maxHeight / 2;
@@ -682,7 +699,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
 
   Widget _buildSingleMarker(DateTime day, T event, double markerSize) {
     return widget.calendarBuilders.singleMarkerBuilder
-            ?.call(context, day, event) ??
+        ?.call(context, day, event) ??
         Container(
           width: markerSize,
           height: markerSize,
@@ -743,13 +760,13 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
   }
 
   bool _isWeekend(
-    DateTime day, {
-    List<int> weekendDays = const [DateTime.saturday, DateTime.sunday],
-  }) {
+      DateTime day, {
+        List<int> weekendDays = const [DateTime.saturday, DateTime.sunday],
+      }) {
     return weekendDays.contains(day.weekday);
   }
 
-  bool _isClosed(DateTime day, List listOfClosedDay) {
+  bool _isClosed(DateTime day, List<ClosedDay> listOfClosedDay) {
     bool result = false;
     int i = 0;
     while(i < listOfClosedDay.length && result != true){
@@ -765,7 +782,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
     return result;
   }
 
-  bool _isScheduled(DateTime day, List listOfScheduledDay) {
+  bool _isScheduled(DateTime day, List<ScheduledActivity> listOfScheduledDay) {
     bool result = false;
     int i = 0;
     while(i < listOfScheduledDay.length && result != true)
@@ -773,13 +790,11 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
       if(result != true)
         if(listOfScheduledDay[i].isUnique)
         {
-          if(listOfScheduledDay[i].date != null) {
-            List<String> time = listOfScheduledDay[i].date.split("/");
-            if (day.year == int.parse(time[2]) &&
-                day.month == int.parse(time[1]) &&
-                day.day == int.parse(time[0])) {
-              result = true;
-            }
+          List<String> time = listOfScheduledDay[i].date.split("/");
+          if (day.year == int.parse(time[2]) &&
+              day.month == int.parse(time[1]) &&
+              day.day == int.parse(time[0])) {
+            result = true;
           }
         }
         else

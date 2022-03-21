@@ -1,8 +1,8 @@
 name: table_calendar
-description: Highly customizable, feature-packed calendar widget for Flutter.
-version: 3.0.4
-author: Aleksander Woźniak <aleksanderwozniak96@gmail.com>
-homepage: https://github.com/aleksanderwozniak/table_calendar
+description: Specific calendar made for matchPro. Fork from Aleksander Woźniak
+version: 1.0.1
+author: Guillaume Colas, fork from Aleksander Woźniak
+homepage: https://github.com/Athlas/table_calendar_matchpro.git
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
