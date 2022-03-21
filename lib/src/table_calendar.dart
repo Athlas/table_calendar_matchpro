@@ -6,8 +6,6 @@ import 'dart:math';
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:simple_gesture_detector/simple_gesture_detector.dart';
-import 'package:table_calendar/src/model/closed_day.dart';
-import 'package:table_calendar/src/model/scheduled_activity.dart';
 
 import 'customization/calendar_builders.dart';
 import 'customization/calendar_style.dart';
@@ -70,9 +68,9 @@ class TableCalendar<T> extends StatefulWidget {
   /// Specifies `TableCalendar`'s current format.
   final CalendarFormat calendarFormat;
 
-  final List<ScheduledActivity> agenda;
+  final List agenda;
 
-  final List<ClosedDay> closedDay;
+  final List closedDay;
 
   /// `Map` of `CalendarFormat`s and `String` names associated with them.
   /// Those `CalendarFormat`s will be used by internal logic to manage displayed format.
@@ -751,7 +749,7 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
     return weekendDays.contains(day.weekday);
   }
 
-  bool _isClosed(DateTime day, List<ClosedDay> listOfClosedDay) {
+  bool _isClosed(DateTime day, List listOfClosedDay) {
     bool result = false;
     int i = 0;
     while(i < listOfClosedDay.length && result != true){
@@ -762,12 +760,12 @@ class _TableCalendarState<T> extends State<TableCalendar<T>> {
         result = true;
       }
       i++;
-    };
+    }
 
     return result;
   }
 
-  bool _isScheduled(DateTime day, List<ScheduledActivity> listOfScheduledDay) {
+  bool _isScheduled(DateTime day, List listOfScheduledDay) {
     bool result = false;
     int i = 0;
     while(i < listOfScheduledDay.length && result != true)
